@@ -1,49 +1,29 @@
-console.log("Hello, World!!");
-
- // 1. Select button
-const button = document.querySelector("button");
-
-// 2. Create function 
-let counter = 0;
-
-function count()  {
-    counter=counter + 1;
-    console.log('Counter: ' + counter);
-}
-
-// 3. Add eventListener
-resetButton.addEventListener('click', count);
-
-// Elements
-const resetButton = document.querySelector('#reset');
-// const squares = document.querySelectorAll('.square');
-const currentPlayer = document.querySelector('#current-player');
-
-// Data trackers
-let counter = 0;
-
-// For loop lesson
-function handleClick(event) {
-    const square = event.target;
-    createX(square);
-}
-
-// Elements
 const squares = document.querySelectorAll('.square');
+const restartButton = document.querySelector('#restart');
+const currentPlayerEl = document.querySelector('#current-player');
 
-function gameLoop(event) {
+let currentPlayer = 'X';
+
+function updateCurrentPlayerDisplay() {
+    if (currentPlayerEl) currentPlayerEl.textContent = `Current player: ${currentPlayer}`;
+}
+
+function handleSquareClick(event) {
     const square = event.target;
-
-    if (currentPlayer.textContent === 'O') {
-        square.textContent = 'O';
-        currentPlayer.textContent = 'X';
-    } else {
-        square.textContent = 'X';
-        currentPlayer.textContent = 'O';
-    }
+    if (square.textContent.trim() !== '') return; 
+    square.textContent = currentPlayer;
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    updateCurrentPlayerDisplay();
 }
 
-for (const square of squares) {
-    console.log('Squares', square);
-    square.addEventListener('click', gameLoop);
+squares.forEach(square => square.addEventListener('click', handleSquareClick));
+
+if (restartButton) {
+    restartButton.addEventListener('click', () => {
+        squares.forEach(sq => (sq.textContent = ''));
+        currentPlayer = 'X';
+        updateCurrentPlayerDisplay();
+    });
 }
+
+updateCurrentPlayerDisplay();
